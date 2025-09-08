@@ -6,7 +6,7 @@
     <title>プログラミングと未来の世界 | コードのその先へ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded 1c:wght@400;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: "Warm Harmony" - A calming and friendly palette with warm neutrals (bg-stone-50), soft blues (bg-sky-100, border-sky-500), and gentle accent colors (amber, teal) to create an engaging and supportive learning environment. -->
     <!-- Application Structure Plan: The SPA is designed as a journey of discovery, structured into four thematic, interactive "Worlds" rather than mirroring the report's chapters. This non-linear, exploratory approach is more engaging for 6th graders. The user flow is: 1) Start at a welcoming "Home Base" that introduces the journey. 2) Freely navigate to any of the four "Worlds" (Why Learn?, How it Works, Our Future, Your Power). 3) Within each World, interact with cards, simple charts, and toggles to reveal information step-by-step. This structure was chosen to empower students to follow their curiosity, making learning self-directed and fun, which is more effective for this age group than a linear text-based report. -->
     <!-- Visualization & Content Choices: 
@@ -66,6 +66,12 @@
         }
         .scroll-container::-webkit-scrollbar {
             display: none;
+        }
+        .tech-info {
+            display: none;
+        }
+        .tech-info.active {
+            display: block;
         }
     </style>
 </head>
@@ -139,28 +145,103 @@
             <section id="world-2" class="content-section">
                 <div class="text-center mb-10 p-6 bg-sky-50 rounded-2xl">
                     <h2 class="text-3xl font-bold text-sky-800 mb-2">コンピューターはどこに隠れてる？</h2>
-                    <p class="text-stone-700 max-w-2xl mx-auto">今やコンピューターはパソコンやスマホの中だけじゃない。まるで空気のように、私たちの生活のいたるところに存在しているんだ。下のイラストのアイコンをクリックして、日常に隠されたテクノロジーを見つけてみよう。</p>
+                    <p class="text-stone-700 max-w-2xl mx-auto">今やコンピューターはパソコンやスマホの中だけじゃない。まるで空気のように、私たちの生活のいたるところに存在しているんだ。下のアイコンをクリックして、日常に隠されたテクノロジーを見つけてみよう。</p>
                 </div>
 
                 <div class="bg-white p-6 md:p-8 rounded-2xl">
-                    <div class="relative max-w-3xl mx-auto">
-                        <div class="text-center text-2xl font-bold mb-6 text-sky-900">君の一日とテクノロジー</div>
-                        <div class="grid grid-cols-3 gap-4 items-center justify-items-center">
-                             <div class="text-center">
-                                <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl" onclick="showTechInfo('home')">🏠</div>
-                                <p class="mt-2 font-bold text-sky-800">おうち</p>
-                            </div>
-                            <div class="text-center">
-                                <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl" onclick="showTechInfo('car')">🚗</div>
-                                <p class="mt-2 font-bold text-sky-800">移動</p>
-                            </div>
-                            <div class="text-center">
-                                <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl" onclick="showTechInfo('shop')">🏪</div>
-                                <p class="mt-2 font-bold text-sky-800">お店</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-items-center mb-6">
+                        <div class="text-center w-full">
+                            <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl mx-auto" onclick="toggleTechInfo('home')">🏠</div>
+                            <p class="mt-2 font-bold text-sky-800">おうち</p>
+                        </div>
+                        <div class="text-center w-full">
+                            <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl mx-auto" onclick="toggleTechInfo('car')">🚗</div>
+                            <p class="mt-2 font-bold text-sky-800">移動</p>
+                        </div>
+                        <div class="text-center w-full">
+                            <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl mx-auto" onclick="toggleTechInfo('shop')">🏪</div>
+                            <p class="mt-2 font-bold text-sky-800">お店</p>
+                        </div>
+                        <div class="text-center w-full">
+                            <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl mx-auto" onclick="toggleTechInfo('farm')">🌳</div>
+                            <p class="mt-2 font-bold text-sky-800">農場</p>
+                        </div>
+                        <div class="text-center w-full">
+                            <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl mx-auto" onclick="toggleTechInfo('hospital')">🏥</div>
+                            <p class="mt-2 font-bold text-sky-800">病院</p>
+                        </div>
+                        <div class="text-center w-full">
+                            <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl mx-auto" onclick="toggleTechInfo('city')">🏙️</div>
+                            <p class="mt-2 font-bold text-sky-800">まち</p>
+                        </div>
+                        <div class="text-center w-full">
+                            <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl mx-auto" onclick="toggleTechInfo('sports')">⚽</div>
+                            <p class="mt-2 font-bold text-sky-800">スポーツ</p>
+                        </div>
+                    </div>
+                    <div id="tech-info-container" class="mt-8">
+                        <div id="home-info" class="tech-info p-6 bg-sky-50 rounded-xl">
+                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
+                                <p class="text-5xl md:text-6xl flex-shrink-0">🏡</p>
+                                <div>
+                                    <h4 class="font-bold text-xl text-sky-900">おうちの中のテクノロジー</h4>
+                                    <p class="text-stone-600 mt-2">スイッチを押さなくても話しかけるだけで動くスマート家電や、自動で床をきれいにしてくれるロボット掃除機など、家の中には君の生活を便利にするコンピューターがたくさんあるよ。</p>
+                                </div>
                             </div>
                         </div>
-                        <div id="tech-info-box" class="mt-8 p-6 bg-sky-50 rounded-xl text-center min-h-[120px] flex items-center justify-center">
-                            <p class="text-stone-600">アイコンをクリックしてみよう！</p>
+                        <div id="car-info" class="tech-info p-6 bg-sky-50 rounded-xl">
+                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
+                                <p class="text-5xl md:text-6xl flex-shrink-0">🚗</p>
+                                <div>
+                                    <h4 class="font-bold text-xl text-sky-900">移動を支えるテクノロジー</h4>
+                                    <p class="text-stone-600 mt-2">カーナビは目的地までの道を計算してくれるし、自動で車線をキープしたり、ぶつかる前にブレーキをかけてくれたりする安全システムも、みんなコンピューターのおかげ。未来には自動運転も当たり前になるかも。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="shop-info" class="tech-info p-6 bg-sky-50 rounded-xl">
+                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
+                                <p class="text-5xl md:text-6xl flex-shrink-0">🏪</p>
+                                <div>
+                                    <h4 class="font-bold text-xl text-sky-900">お店のテクノロジー</h4>
+                                    <p class="text-stone-600 mt-2">お店のバーコードを読み取るレジや、商品の数をコンピューターが管理するシステム、スマホで簡単に支払えるキャッシュレス決済など、コンピューターは買い物をスムーズにしてくれているよ。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="farm-info" class="tech-info p-6 bg-sky-50 rounded-xl">
+                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
+                                <p class="text-5xl md:text-6xl flex-shrink-0">🌳</p>
+                                <div>
+                                    <h4 class="font-bold text-xl text-sky-900">農業のテクノロジー</h4>
+                                    <p class="text-stone-600 mt-2">ドローンが空から畑の状態を調べて、AIが「この場所に水が必要だよ」と教えてくれる。自動で野菜を収穫するロボットも活躍し始めているんだ。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="hospital-info" class="tech-info p-6 bg-sky-50 rounded-xl">
+                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
+                                <p class="text-5xl md:text-6xl flex-shrink-0">🏥</p>
+                                <div>
+                                    <h4 class="font-bold text-xl text-sky-900">病院のテクノロジー</h4>
+                                    <p class="text-stone-600 mt-2">離れた場所にいるお医者さんに診てもらえる遠隔医療システムや、難しい手術を助けてくれる精密なロボットなど、コンピューターは私たちの健康を守るために働いているよ。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="city-info" class="tech-info p-6 bg-sky-50 rounded-xl">
+                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
+                                <p class="text-5xl md:text-6xl flex-shrink-0">🏙️</p>
+                                <div>
+                                    <h4 class="font-bold text-xl text-sky-900">まちのテクノロジー</h4>
+                                    <p class="text-stone-600 mt-2">AIが交通量を分析して信号を自動で切り替え、渋滞を減らしてくれる。ごみの量をセンサーで測って、いっぱいになったら自動で回収に来る「スマートごみ箱」も登場しているんだ。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sports-info" class="tech-info p-6 bg-sky-50 rounded-xl">
+                            <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
+                                <p class="text-5xl md:text-6xl flex-shrink-0">⚽</p>
+                                <div>
+                                    <h4 class="font-bold text-xl text-sky-900">スポーツのテクノロジー</h4>
+                                    <p class="text-stone-600 mt-2">選手の動きを分析してより良い練習方法を見つけたり、ウェアラブルデバイスを使って心拍数を測ったり、コンピューターはスポーツの世界でも活躍しているよ。</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -218,13 +299,7 @@
     <script>
         const navButtons = document.querySelectorAll('.nav-button');
         const contentSections = document.querySelectorAll('.content-section');
-        const techInfoBox = document.getElementById('tech-info-box');
-
-        const techData = {
-            home: '<strong>おうちの中のテクノロジー：</strong><br>ロボット掃除機、スマート家電（エアコンや照明）、話しかけると答えてくれるAIスピーカー。',
-            car: '<strong>移動を支えるテクノロジー：</strong><br>カーナビ、衝突を防ぐ安全システム、そして未来の自動運転車。',
-            shop: '<strong>お店のテクノロジー：</strong><br>バーコードを読み取るレジ、商品の数を管理するシステム、スマホでのキャッシュレス決済。'
-        };
+        const techInfos = document.querySelectorAll('.tech-info');
 
         navButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -248,10 +323,14 @@
             element.style.display = element.style.display === 'none' ? 'block' : 'none';
         }
 
-        function showTechInfo(key) {
-            if (techData[key]) {
-                techInfoBox.innerHTML = techData[key];
-            }
+        function toggleTechInfo(key) {
+            techInfos.forEach(info => {
+                if (info.id === `${key}-info`) {
+                    info.classList.toggle('active');
+                } else {
+                    info.classList.remove('active');
+                }
+            });
         }
         
         const chartData = {
