@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プログラミングと未来の世界 | コードのその先へ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Warm Harmony" - A calming and friendly palette with warm neutrals (bg-stone-50), soft blues (bg-sky-100, border-sky-500), and gentle accent colors (amber, teal) to create an engaging and supportive learning environment. -->
+    <!-- Application Structure Plan: The SPA is designed as a journey of discovery, structured into four thematic, interactive "Worlds" rather than mirroring the report's chapters. This non-linear, exploratory approach is more engaging for 6th graders. The user flow is: 1) Start at a welcoming "Home Base" that introduces the journey. 2) Freely navigate to any of the four "Worlds" (Why Learn?, How it Works, Our Future, Your Power). 3) Within each World, interact with cards, simple charts, and toggles to reveal information step-by-step. This structure was chosen to empower students to follow their curiosity, making learning self-directed and fun, which is more effective for this age group than a linear text-based report. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Chapter 1's core skills (logical thinking, problem-solving, creativity). -> Goal: Inform & Engage. -> Viz/Presentation: Interactive "Skill Cards" in "World 1: なぜ学ぶの？ (Why Learn?)". -> Interaction: Clicking a card reveals a simple explanation. -> Justification: Breaks down abstract concepts into digestible, interactive pieces. -> Library/Method: HTML/CSS/Tailwind/JS.
+        - Report Info: Table 1-1's programming tools. -> Goal: Organize & Inform. -> Viz/Presentation: A horizontal scrolling gallery of "Tool Cards" in "World 1". -> Interaction: Users can scroll through tools like Scratch, LEGO, etc. -> Justification: Visually appealing and allows for easy comparison without overwhelming the user. -> Library/Method: HTML/CSS/Tailwind.
+        - Report Info: Chapter 2's concepts of IoT and AI. -> Goal: Inform & Relate. -> Viz/Presentation: A "Daily Life" interactive diagram in "World 2: どう動いてるの？ (How it Works)". -> Interaction: Clicking on icons (home, car, shop) reveals hidden computer/AI technologies. -> Justification: Connects abstract tech concepts to students' everyday experiences. -> Library/Method: HTML/CSS/Tailwind/JS.
+        - Report Info: Table 3-1's future skills. -> Goal: Compare & Inspire. -> Viz/Presentation: A dynamic doughnut chart in "World 3: これからの社会 (Our Future)". -> Interaction: Buttons below the chart update it to show the importance of different skills (e.g., "Problem Solving", "Creativity"). -> Justification: Visually represents the importance of human skills in an AI era, making the data more impactful than a static table. -> Library/Method: Chart.js/Canvas.
+        - Report Info: Chapter 4's concluding message. -> Goal: Inspire & Empower. -> Viz/Presentation: An uplifting, message-focused section in "World 4: キミの力 (Your Power)". -> Interaction: Simple hover effects on key words. -> Justification: Ends the experience on a positive and motivational note, reinforcing the core message that students are the creators of the future. -> Library/Method: HTML/CSS/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background-color: #fdfcfb; /* bg-stone-50 */
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .nav-button.active, .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #f59e0b; /* amber-500 */
+            color: white;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .scroll-container {
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-600 mb-2">コードのその先へ</h1>
+            <p class="text-lg text-stone-600">プログラミングと君たちが創る未来の世界</p>
+        </header>
+
+        <nav class="flex flex-wrap justify-center gap-3 md:gap-4 mb-12">
+            <button data-target="world-1" class="nav-button active text-sm md:text-base font-bold py-3 px-5 bg-white rounded-full text-amber-700">ワールド１：なぜ学ぶの？</button>
+            <button data-target="world-2" class="nav-button text-sm md:text-base font-bold py-3 px-5 bg-white rounded-full text-sky-700">ワールド２：どう動いてるの？</button>
+            <button data-target="world-3" class="nav-button text-sm md:text-base font-bold py-3 px-5 bg-white rounded-full text-teal-700">ワールド３：これからの社会</button>
+            <button data-target="world-4" class="nav-button text-sm md:text-base font-bold py-3 px-5 bg-white rounded-full text-rose-700">ワールド４：キミの力</button>
+        </nav>
+
+        <main>
+            <section id="world-1" class="content-section active">
+                <div class="text-center mb-10 p-6 bg-amber-50 rounded-2xl">
+                    <h2 class="text-3xl font-bold text-amber-800 mb-2">なぜプログラミングを学ぶんだろう？</h2>
+                    <p class="text-stone-700 max-w-2xl mx-auto">プログラミングは、ただコンピューターに命令する技術じゃないんだ。それは、君たちの頭の中にある素晴らしいアイデアを形にするための「魔法の言葉」。そして、未来を生きるために必要な「スーパーパワー」を育ててくれるんだ。下のカードをクリックして、どんな力が身につくか見てみよう！</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    <div class="card bg-white p-6 rounded-2xl border-2 border-amber-200" onclick="toggleVisibility('skill-1')">
+                        <h3 class="text-xl font-bold text-amber-700 mb-2">① 論理的思考力</h3>
+                        <p id="skill-1" class="text-stone-600" style="display: none;">物事を順序立てて考える力。複雑な問題も、小さく分けて一つずつ解決できる！</p>
+                    </div>
+                    <div class="card bg-white p-6 rounded-2xl border-2 border-amber-200" onclick="toggleVisibility('skill-2')">
+                        <h3 class="text-xl font-bold text-amber-700 mb-2">② 問題解決能力</h3>
+                        <p id="skill-2" class="text-stone-600" style="display: none;">「うまくいかない！」はチャンスのしるし。原因を探し、あきらめずに挑戦する力がつく！</p>
+                    </div>
+                    <div class="card bg-white p-6 rounded-2xl border-2 border-amber-200" onclick="toggleVisibility('skill-3')">
+                        <h3 class="text-xl font-bold text-amber-700 mb-2">③ 創造する力</h3>
+                        <p id="skill-3" class="text-stone-600" style="display: none;">頭の中のゲームや物語を、自分の手で世界に生み出すことができる！</p>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-white rounded-2xl">
+                    <h3 class="text-2xl font-bold text-center text-amber-800 mb-6">アイデアを形にする道具たち</h3>
+                    <div class="relative">
+                        <div class="flex overflow-x-auto space-x-6 pb-4 scroll-container">
+                            <div class="flex-shrink-0 w-64 bg-amber-50 rounded-xl p-5 text-center">
+                                <h4 class="font-bold text-lg text-amber-900">Scratch</h4>
+                                <p class="text-sm text-stone-600 mt-1">ブロックを繋げてゲームやアニメが作れる！</p>
+                            </div>
+                            <div class="flex-shrink-0 w-64 bg-sky-50 rounded-xl p-5 text-center">
+                                <h4 class="font-bold text-lg text-sky-900">LEGO Mindstorms</h4>
+                                <p class="text-sm text-stone-600 mt-1">レゴで組み立てたロボットをプログラミングで動かそう！</p>
+                            </div>
+                            <div class="flex-shrink-0 w-64 bg-teal-50 rounded-xl p-5 text-center">
+                                <h4 class="font-bold text-lg text-teal-900">micro:bit</h4>
+                                <p class="text-sm text-stone-600 mt-1">小さなコンピューターで、身の回りの問題を解決！</p>
+                            </div>
+                            <div class="flex-shrink-0 w-64 bg-rose-50 rounded-xl p-5 text-center">
+                                <h4 class="font-bold text-lg text-rose-900">KOOV</h4>
+                                <p class="text-sm text-stone-600 mt-1">ブロックで自由に形を作り、動きを与えて遊ぼう！</p>
+                            </div>
+                             <div class="flex-shrink-0 w-64 bg-indigo-50 rounded-xl p-5 text-center">
+                                <h4 class="font-bold text-lg text-indigo-900">MESH</h4>
+                                <p class="text-sm text-stone-600 mt-1">IoTブロックで、身近なものを発明品に変えよう！</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="world-2" class="content-section">
+                <div class="text-center mb-10 p-6 bg-sky-50 rounded-2xl">
+                    <h2 class="text-3xl font-bold text-sky-800 mb-2">コンピューターはどこに隠れてる？</h2>
+                    <p class="text-stone-700 max-w-2xl mx-auto">今やコンピューターはパソコンやスマホの中だけじゃない。まるで空気のように、私たちの生活のいたるところに存在しているんだ。下のイラストのアイコンをクリックして、日常に隠されたテクノロジーを見つけてみよう。</p>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl">
+                    <div class="relative max-w-3xl mx-auto">
+                        <div class="text-center text-2xl font-bold mb-6 text-sky-900">君の一日とテクノロジー</div>
+                        <div class="grid grid-cols-3 gap-4 items-center justify-items-center">
+                             <div class="text-center">
+                                <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl" onclick="showTechInfo('home')">🏠</div>
+                                <p class="mt-2 font-bold text-sky-800">おうち</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl" onclick="showTechInfo('car')">🚗</div>
+                                <p class="mt-2 font-bold text-sky-800">移動</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="card bg-sky-100 w-24 h-24 rounded-full flex items-center justify-center text-4xl" onclick="showTechInfo('shop')">🏪</div>
+                                <p class="mt-2 font-bold text-sky-800">お店</p>
+                            </div>
+                        </div>
+                        <div id="tech-info-box" class="mt-8 p-6 bg-sky-50 rounded-xl text-center min-h-[120px] flex items-center justify-center">
+                            <p class="text-stone-600">アイコンをクリックしてみよう！</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="world-3" class="content-section">
+                <div class="text-center mb-10 p-6 bg-teal-50 rounded-2xl">
+                    <h2 class="text-3xl font-bold text-teal-800 mb-2">AIの時代、人間にしかできないことって？</h2>
+                    <p class="text-stone-700 max-w-2xl mx-auto">AI（人工知能）がどんどん賢くなって、社会のいろんな場面で活躍する未来。じゃあ、人間の役割はどうなるんだろう？ AIはすごい計算は得意だけど、人間にしかできない大切なことがあるんだ。下のグラフで、未来に求められる人間の力を探ってみよう。</p>
+                </div>
+                
+                <div class="bg-white p-6 md:p-8 rounded-2xl">
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <p class="font-bold text-teal-900 mb-4">AI時代に特に重要になる人間の力</p>
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <button onclick="updateChart(0)" class="bg-teal-100 text-teal-800 px-4 py-2 rounded-full font-semibold hover:bg-teal-200 transition">問題解決能力</button>
+                            <button onclick="updateChart(1)" class="bg-teal-100 text-teal-800 px-4 py-2 rounded-full font-semibold hover:bg-teal-200 transition">創造性</button>
+                            <button onclick="updateChart(2)" class="bg-teal-100 text-teal-800 px-4 py-2 rounded-full font-semibold hover:bg-teal-200 transition">協調性</button>
+                            <button onclick="updateChart(3)" class="bg-teal-100 text-teal-800 px-4 py-2 rounded-full font-semibold hover:bg-teal-200 transition">倫理的な判断力</button>
+                        </div>
+                        <p class="text-xs text-stone-500 mt-4">出典: レポート「コードのその先へ：プログラミング、コンピュータ、そして人間生活の未来に関するレポート」表3-1より作成</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="world-4" class="content-section">
+                <div class="text-center p-6 bg-rose-50 rounded-2xl">
+                    <h2 class="text-3xl font-bold text-rose-800 mb-2">未来は、君たちの手の中にある</h2>
+                    <p class="text-stone-700 max-w-2xl mx-auto">プログラミングの旅、どうだったかな？大切なのは、コードを書く技術だけじゃない。それは、君たちの「論理的な心」と「創造的な心」をつなぐ、最高のツールなんだ。</p>
+                </div>
+
+                <div class="mt-10 grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-8 rounded-2xl text-center">
+                        <p class="text-5xl mb-4">🎨</p>
+                        <h3 class="text-2xl font-bold text-rose-900 mb-3">君は「創り手」だ</h3>
+                        <p class="text-stone-700">どんなにAIが進化しても、「何を作りたいか」「どんな未来にしたいか」を考えるのは、いつだって人間だ。君たちは未来の利用者じゃなく、未来の設計者なんだ。</p>
+                    </div>
+                     <div class="bg-white p-8 rounded-2xl text-center">
+                        <p class="text-5xl mb-4">🚀</p>
+                        <h3 class="text-2xl font-bold text-rose-900 mb-3">小さな一歩から</h3>
+                        <p class="text-stone-700">キャラクターが動いた、ゲームが完成した。そんな「できた！」の気持ちを大切にしよう。その小さな成功が、社会を変える大きな未来につながっている。</p>
+                    </div>
+                </div>
+                 <div class="mt-12 text-center p-8 bg-gradient-to-r from-amber-400 to-rose-500 rounded-2xl text-white">
+                    <p class="text-2xl font-bold">さあ、君の創造力で、未来を形作ろう！</p>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        const navButtons = document.querySelectorAll('.nav-button');
+        const contentSections = document.querySelectorAll('.content-section');
+        const techInfoBox = document.getElementById('tech-info-box');
+
+        const techData = {
+            home: '<strong>おうちの中のテクノロジー：</strong><br>ロボット掃除機、スマート家電（エアコンや照明）、話しかけると答えてくれるAIスピーカー。',
+            car: '<strong>移動を支えるテクノロジー：</strong><br>カーナビ、衝突を防ぐ安全システム、そして未来の自動運転車。',
+            shop: '<strong>お店のテクノロジー：</strong><br>バーコードを読み取るレジ、商品の数を管理するシステム、スマホでのキャッシュレス決済。'
+        };
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.target;
+
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                contentSections.forEach(section => {
+                    if (section.id === target) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        function toggleVisibility(id) {
+            const element = document.getElementById(id);
+            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showTechInfo(key) {
+            if (techData[key]) {
+                techInfoBox.innerHTML = techData[key];
+            }
+        }
+        
+        const chartData = {
+            labels: ['AIが得意なこと', '人間が特に重要なこと'],
+            datasets: [
+                {
+                    label: '問題解決能力',
+                    data: [60, 40],
+                    backgroundColor: ['#d1d5db', '#0d9488'],
+                    borderColor: '#f0fdfa',
+                    borderWidth: 4,
+                    hoverOffset: 4
+                },
+                {
+                    label: '創造性',
+                    data: [20, 80],
+                    backgroundColor: ['#d1d5db', '#0d9488'],
+                    borderColor: '#f0fdfa',
+                    borderWidth: 4,
+                    hoverOffset: 4
+                },
+                {
+                    label: '協調性',
+                    data: [10, 90],
+                    backgroundColor: ['#d1d5db', '#0d9488'],
+                    borderColor: '#f0fdfa',
+                    borderWidth: 4,
+                    hoverOffset: 4
+                },
+                 {
+                    label: '倫理的な判断力',
+                    data: [5, 95],
+                    backgroundColor: ['#d1d5db', '#0d9488'],
+                    borderColor: '#f0fdfa',
+                    borderWidth: 4,
+                    hoverOffset: 4
+                }
+            ]
+        };
+
+        let skillsChart;
+        
+        function createChart() {
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            if(skillsChart) {
+                skillsChart.destroy();
+            }
+            skillsChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [chartData.datasets[0]]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: "'M PLUS Rounded 1c', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: chartData.datasets[0].label,
+                            font: {
+                                size: 18,
+                                weight: 'bold',
+                                family: "'M PLUS Rounded 1c', sans-serif"
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        function updateChart(datasetIndex) {
+            const newDataset = chartData.datasets[datasetIndex];
+            skillsChart.data.datasets[0] = newDataset;
+            skillsChart.options.plugins.title.text = newDataset.label;
+            skillsChart.update();
+        }
+
+        window.onload = function() {
+            document.getElementById('world-1').classList.add('active');
+            createChart();
+        };
+
+    </script>
+</body>
+</html>
